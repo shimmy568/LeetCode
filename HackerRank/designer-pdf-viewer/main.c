@@ -17,38 +17,49 @@ char **split_string(char *);
 int parse_int(char *);
 
 /*
- * Complete the 'formingMagicSquare' function below.
+ * Complete the 'designerPdfViewer' function below.
  *
  * The function is expected to return an INTEGER.
- * The function accepts 2D_INTEGER_ARRAY s as parameter.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY h
+ *  2. STRING word
  */
 
-int formingMagicSquare(int s_rows, int s_columns, int **s)
+int designerPdfViewer(int h_count, int *h, char *word)
 {
-    // TODO
+    int max_height = 0;
+    int word_len = strlen(word);
+
+    for (int i = 0; i < word_len; i++)
+    {
+        int hIndex = word[i] - 'a';
+        if (h[hIndex] > max_height)
+        {
+            max_height = h[hIndex];
+        }
+    }
+
+    return max_height * word_len;
 }
 
 int main()
 {
     FILE *fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int **s = malloc(3 * sizeof(int *));
+    char **h_temp = split_string(rtrim(readline()));
 
-    for (int i = 0; i < 3; i++)
+    int *h = malloc(26 * sizeof(int));
+
+    for (int i = 0; i < 26; i++)
     {
-        *(s + i) = malloc(3 * (sizeof(int)));
+        int h_item = parse_int(*(h_temp + i));
 
-        char **s_item_temp = split_string(rtrim(readline()));
-
-        for (int j = 0; j < 3; j++)
-        {
-            int s_item = parse_int(*(s_item_temp + j));
-
-            *(*(s + i) + j) = s_item;
-        }
+        *(h + i) = h_item;
     }
 
-    int result = formingMagicSquare(3, 3, s);
+    char *word = readline();
+
+    int result = designerPdfViewer(26, h, word);
 
     fprintf(fptr, "%d\n", result);
 
